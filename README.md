@@ -1,6 +1,7 @@
 # open-borders
 Allow warp travel for templates
 
+Inspired by https://dev.to/westbrook/your-content-in-shadow-dom-portals-3cdb, https://www.npmjs.com/package/portal-vue, https://reactjs.org/docs/portals.html
 
 ```html
 <open-borders target=... schema=...>
