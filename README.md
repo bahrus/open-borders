@@ -13,8 +13,8 @@ Inspired by https://dev.to/westbrook/your-content-in-shadow-dom-portals-3cdb, ht
 
 does the following:
 
-- [ ] Nothing happens until be-born attribute / beBorn property is set (to true).  At that point...
-- [ ] Clones the template into the location specified by target string 
+- [x] Nothing happens until be-born attribute / beBorn property is set (to true).  At that point...
+- [x] Clones the template into the location specified by target string 
 - [ ] If no target string, just clone and append to parent (?) 
 - [ ] Changing be-born back to false / true doesn't do anything anymore. 
 - [ ] Holds on to reference of cloned element.  cloned element also gets reference to open-border birthplace 
