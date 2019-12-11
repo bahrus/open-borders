@@ -1,6 +1,6 @@
 {
   "name": "open-borders",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "TBD",
   "main": "open-borders.js",
   "scripts": {
@@ -10,7 +10,7 @@
   "dependencies": {
     "trans-render": "0.0.141",
     "xtal-element": "0.0.96",
-    "xtal-shell": "0.0.23"
+    "xtal-shell": "0.0.25"
   },
   "devDependencies": {
     "xtal-test": "0.0.31",
