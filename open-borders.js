@@ -37,6 +37,11 @@ export class OpenBorders extends XtallatX(hydrate(HTMLElement)) {
         this.propUp([target, 'beBorn']);
         this.onPropsChange();
     }
+    disconnectedCallback() {
+        if (this._worldCitizen !== undefined) {
+            this._worldCitizen.remove();
+        }
+    }
     onPropsChange() {
         if (!this._c || this._disabled || !this._be_born)
             return;
@@ -50,6 +55,7 @@ export class OpenBorders extends XtallatX(hydrate(HTMLElement)) {
         if (this._target !== undefined) {
             const targetEl = cd(this, this._target);
             targetEl.appendChild(templ.content.cloneNode(true));
+            this._worldCitizen = targetEl.lastElementChild;
         }
     }
 }

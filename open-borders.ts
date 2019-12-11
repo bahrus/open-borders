@@ -2,6 +2,7 @@ import {XtallatX} from 'xtal-element/xtal-latx.js';
 import {hydrate} from 'trans-render/hydrate.js';
 import { cd } from 'xtal-shell/cd.js';
 import {define} from 'trans-render/define.js';
+import { unwatchFile } from 'fs';
 
 const target = 'target';
 const be_born = 'be-born';
@@ -44,6 +45,14 @@ export class OpenBorders extends XtallatX(hydrate(HTMLElement)){
         this.propUp([target, 'beBorn']);
         this.onPropsChange();
     }
+    disconnectedCallback(){
+        if(this._worldCitizen !== undefined){
+            this._worldCitizen.remove();
+            
+
+        }
+    }
+    _worldCitizen: HTMLElement | undefined;
     onPropsChange(){
         if(!this._c || this._disabled || !this._be_born) return;
         const templ = this.querySelector('template');
@@ -56,6 +65,7 @@ export class OpenBorders extends XtallatX(hydrate(HTMLElement)){
         if(this._target !== undefined){
             const targetEl = cd(this, this._target);
             targetEl.appendChild(templ.content.cloneNode(true));
+            this._worldCitizen = targetEl.lastElementChild as HTMLElement;
         }
     }
 }

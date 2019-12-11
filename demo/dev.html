@@ -7,9 +7,15 @@
     <title>Document</title>
 </head>
 <body>
-    <open-borders be-born target=../div>
-      <template>test</template>
+    <open-borders id=ob be-born target=../div>
+      <template><div>test</div></template>
     </open-borders>
+    <button onclick="removeOpenBorders()">remove</button>
+    <script>
+      function removeOpenBorders(){
+        ob.remove();
+      }
+    </script>
     <script defer src="../node_modules/es-module-shims/dist/es-module-shims.js"></script>
     <script type="importmap-shim">
         {
