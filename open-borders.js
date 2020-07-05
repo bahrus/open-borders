@@ -1,62 +1,57 @@
-import { XtallatX } from 'xtal-element/xtal-latx.js';
+import { XtallatX, define } from 'xtal-element/xtal-latx.js';
 import { hydrate } from 'trans-render/hydrate.js';
 import { cd } from 'xtal-shell/cd.js';
-import { define } from 'trans-render/define.js';
-const target = 'target';
-const be_born = 'be-born';
-export class OpenBorders extends XtallatX(hydrate(HTMLElement)) {
-    static get is() { return 'open-borders'; }
-    static get observedAttributes() {
-        return super.observedAttributes.concat([target, be_born]);
+const templTarget = Symbol();
+const linkTemplate = ({ disabled, self, beBorn }) => {
+    if (disabled)
+        return;
+    const templ = self.querySelector('template');
+    if (templ === null) {
+        setTimeout(() => {
+            linkTemplate(self);
+        }, 50);
+        return;
     }
-    attributeChangedCallback(n, ov, nv) {
-        switch (n) {
-            case target:
-                this._target = nv;
-                break;
-            case be_born:
-                this._be_born = nv !== null;
-                break;
+    self.template = templ;
+};
+const linkWorldCitizen = ({ disabled, beBorn, target, template, self }) => {
+    if (disabled || template === undefined || beBorn !== true || target === undefined)
+        return;
+    if (template[templTarget] === target)
+        return;
+    template[templTarget] = target;
+    const targetEl = cd(self, target);
+    if (self.worldCitizen) {
+        targetEl.appendChild(self.worldCitizen);
+    }
+    else {
+        targetEl.appendChild(template.content.cloneNode(true));
+        self.worldCitizen = targetEl.lastElementChild;
+    }
+};
+let OpenBorders = /** @class */ (() => {
+    class OpenBorders extends XtallatX(hydrate(HTMLElement)) {
+        constructor() {
+            super(...arguments);
+            this.propActions = [
+                linkTemplate,
+                linkWorldCitizen
+            ];
         }
-        this.onPropsChange();
-    }
-    get target() {
-        return this._target;
-    }
-    set target(nv) {
-        this.attr(target, nv);
-    }
-    get beBorn() {
-        return this._be_born;
-    }
-    set beBorn(nv) {
-        this.attr(be_born, nv, '');
-    }
-    connectedCallback() {
-        this._c = true;
-        this.__propUp([target, 'beBorn']);
-        this.onPropsChange();
-    }
-    disconnectedCallback() {
-        if (this._worldCitizen !== undefined) {
-            this._worldCitizen.remove();
-        }
-    }
-    onPropsChange() {
-        if (!this._c || this.disabled || !this._be_born)
-            return;
-        const templ = this.querySelector('template');
-        if (templ === null) {
-            setTimeout(() => {
-                this.onPropsChange();
-            }, 50);
-            return;
-        }
-        if (this._target !== undefined) {
-            const targetEl = cd(this, this._target);
-            targetEl.appendChild(templ.content.cloneNode(true));
-            this._worldCitizen = targetEl.lastElementChild;
+        disconnectedCallback() {
+            if (this.worldCitizen !== undefined) {
+                this.worldCitizen.remove();
+            }
         }
     }
-}
+    OpenBorders.is = 'open-borders';
+    OpenBorders.attributeProps = ({ target, beBorn, worldCitizen, template, disabled }) => ({
+        bool: [disabled, beBorn],
+        str: [target],
+        obj: [worldCitizen, template],
+        reflect: [disabled, beBorn, target],
+    });
+    return OpenBorders;
+})();
+export { OpenBorders };
 define(OpenBorders);
