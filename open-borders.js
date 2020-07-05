@@ -34,7 +34,7 @@ export class OpenBorders extends XtallatX(hydrate(HTMLElement)) {
     }
     connectedCallback() {
         this._c = true;
-        this.propUp([target, 'beBorn']);
+        this.__propUp([target, 'beBorn']);
         this.onPropsChange();
     }
     disconnectedCallback() {
@@ -43,7 +43,7 @@ export class OpenBorders extends XtallatX(hydrate(HTMLElement)) {
         }
     }
     onPropsChange() {
-        if (!this._c || this._disabled || !this._be_born)
+        if (!this._c || this.disabled || !this._be_born)
             return;
         const templ = this.querySelector('template');
         if (templ === null) {

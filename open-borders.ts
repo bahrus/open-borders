@@ -42,7 +42,7 @@ export class OpenBorders extends XtallatX(hydrate(HTMLElement)){
     _c: boolean;
     connectedCallback(){
         this._c = true;
-        this.propUp([target, 'beBorn']);
+        this.__propUp([target, 'beBorn']);
         this.onPropsChange();
     }
     disconnectedCallback(){
@@ -54,7 +54,7 @@ export class OpenBorders extends XtallatX(hydrate(HTMLElement)){
     }
     _worldCitizen: HTMLElement | undefined;
     onPropsChange(){
-        if(!this._c || this._disabled || !this._be_born) return;
+        if(!this._c || this.disabled || !this._be_born) return;
         const templ = this.querySelector('template');
         if(templ === null){
             setTimeout(() =>{
