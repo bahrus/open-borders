@@ -5,7 +5,7 @@ import { cd } from 'xtal-shell/cd.js';
 const templTarget = Symbol();
 
 const linkTemplate = ({disabled, self, beBorn}: OpenBorders) => {
-    if(disabled) return;
+    if(disabled || !beBorn) return;
     const templ = self.querySelector('template');
     if(templ === null){
         setTimeout(() =>{

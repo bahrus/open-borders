@@ -3,7 +3,7 @@ import { hydrate } from 'trans-render/hydrate.js';
 import { cd } from 'xtal-shell/cd.js';
 const templTarget = Symbol();
 const linkTemplate = ({ disabled, self, beBorn }) => {
-    if (disabled)
+    if (disabled || !beBorn)
         return;
     const templ = self.querySelector('template');
     if (templ === null) {
