@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <open-borders id=ob be-born target=../div>
+      <template><div>test</div></template>
+    </open-borders>
+    <button onclick="removeOpenBorders()">remove</button>
+    <script>
+      function removeOpenBorders(){
+        ob.remove();
+      }
+    </script>
+    <script type=importmap>
+        {
+          "imports": {
+            "xtal-element/": "../node_modules/xtal-element/",
+            "trans-render/": "../node_modules/trans-render/",
+            "xtal-shell/": "../node_modules/xtal-shell/"
+          }
+        }
+    </script>
+    <script  type=module>
+        import '../open-borders2.js';
+    </script>
+    <div></div>
+</body>
+</html>
