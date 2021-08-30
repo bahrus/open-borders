@@ -1,57 +1,54 @@
-import { XtallatX, define } from 'xtal-element/xtal-latx.js';
-import { hydrate } from 'trans-render/hydrate.js';
+import { XE } from 'xtal-element/src/XE.js';
 import { cd } from 'xtal-shell/cd.js';
-const templTarget = Symbol();
-const linkTemplate = ({ disabled, self, beBorn }) => {
-    if (disabled || !beBorn)
-        return;
-    const templ = self.querySelector('template');
-    if (templ === null) {
-        setTimeout(() => {
-            linkTemplate(self);
-        }, 50);
-        return;
-    }
-    self.template = templ;
-};
-const linkWorldCitizen = ({ disabled, beBorn, target, template, self }) => {
-    if (disabled || template === undefined || beBorn !== true || target === undefined)
-        return;
-    if (template[templTarget] === target)
-        return;
-    template[templTarget] = target;
-    const targetEl = cd(self, target);
-    if (self.worldCitizen) {
-        targetEl.appendChild(self.worldCitizen);
-    }
-    else {
-        targetEl.appendChild(template.content.cloneNode(true));
-        self.worldCitizen = targetEl.lastElementChild;
-    }
-};
-let OpenBorders = /** @class */ (() => {
-    class OpenBorders extends XtallatX(hydrate(HTMLElement)) {
-        constructor() {
-            super(...arguments);
-            this.propActions = [
-                linkTemplate,
-                linkWorldCitizen
-            ];
+export class OpenBordersCore extends HTMLElement {
+    findTemplate({}) {
+        const templ = this.querySelector('template');
+        if (templ === null) {
+            setTimeout(() => {
+                this.findTemplate(this);
+            }, 50);
+            return;
         }
-        disconnectedCallback() {
-            if (this.worldCitizen !== undefined) {
-                this.worldCitizen.remove();
+        this.template = templ;
+    }
+    createRoamingElement({ target, template, roamingElement }) {
+        const targetEl = cd(this, target);
+        if (roamingElement) {
+            targetEl.appendChild(roamingElement);
+        }
+        else {
+            targetEl.appendChild(template.content.cloneNode(true));
+            this.roamingElement = targetEl.lastElementChild;
+        }
+    }
+    disconnectedCallback() {
+        if (this.roamingElement !== undefined) {
+            this.roamingElement.remove();
+        }
+    }
+}
+const xe = new XE({
+    config: {
+        tagName: 'open-borders',
+        propDefaults: {
+            beBorn: false,
+            target: '',
+            disabled: false,
+            isC: true,
+        },
+        actions: {
+            findTemplate: {
+                ifAllOf: ['isC'],
+                ifNoneOf: ['disabled']
+            },
+            createRoamingElement: {
+                ifAllOf: ['template', 'target', 'beBorn'],
+                ifNoneOf: ['disabled']
             }
+        },
+        style: {
+            display: 'none'
         }
-    }
-    OpenBorders.is = 'open-borders';
-    OpenBorders.attributeProps = ({ target, beBorn, worldCitizen, template, disabled }) => ({
-        bool: [disabled, beBorn],
-        str: [target],
-        obj: [worldCitizen, template],
-        reflect: [disabled, beBorn, target],
-    });
-    return OpenBorders;
-})();
-export { OpenBorders };
-define(OpenBorders);
+    },
+    superclass: OpenBordersCore
+});

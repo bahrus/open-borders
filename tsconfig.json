@@ -9,7 +9,7 @@
 		"watch": true
 	},
 	"files":[
-		"open-borders2.ts"
+		"open-borders.ts"
 	],
 	"exclude":[
 		"build"
