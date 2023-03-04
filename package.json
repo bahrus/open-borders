@@ -13,7 +13,7 @@
     "xtal-shell": "0.0.25"
   },
   "devDependencies": {
-    "xtal-test": "0.0.51"
+    "xtal-test": "0.0.57"
   },
   "repository": {
     "type": "git",
